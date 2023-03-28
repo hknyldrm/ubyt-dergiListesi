@@ -1,6 +1,5 @@
 import "./App.css";
 import React, { useState, useEffect } from "react";
-import * as XLSX from "xlsx";
 import f from "./data/data.json";
 import ReactPaginate from "react-paginate";
 
@@ -18,28 +17,6 @@ function App() {
     setItem(f.data);
     setSearchItem(f.data);
   }, []);
-
-  const readExcel = (file) => {
-    const promise = new Promise((resolve, reject) => {
-      const fileReader = new FileReader();
-      fileReader.readAsArrayBuffer(file);
-      fileReader.onload = (e) => {
-        const bufferArray = e.target.result;
-        const wb = XLSX.read(bufferArray, { type: "buffer" });
-        const wsname = wb.SheetNames[0];
-        const ws = wb.Sheets[wsname];
-        const data = XLSX.utils.sheet_to_json(ws, { raw: true });
-        resolve(data);
-      };
-      fileReader.onerror = (error) => {
-        reject(error);
-      };
-    });
-    promise.then((d) => {
-      setItem(d);
-      setSearchItem(d);
-    });
-  };
 
   const lastPostIndex = currentItemPage * postItemPerPage;
   const firstPostIndex = lastPostIndex - postItemPerPage;
@@ -70,16 +47,6 @@ function App() {
 
   return (
     <div>
-      <input
-        type="file"
-        onChange={(e) => {
-          const file = e.target.files[0];
-          readExcel(file);
-          setCurrentItemPage(1);
-        }}
-      />
-      <br />
-      <br />
       <div className="input-group">
         <div className="form-outline ">
           <input
@@ -98,18 +65,14 @@ function App() {
             <th scope="col">SNO</th>
             <th scope="col">Başlık</th>
             <th scope="col">Kısa Başlık</th>
-            <th scope="col">MEP</th>
             <th scope="col">Ödeme</th>
+            <th scope="col">MEP</th>
             <th scope="col">ISSN</th>
             <th scope="col">EISSN</th>
             <th scope="col">AHCI?</th>
             <th scope="col">SOC?</th>
             <th scope="col">SCI</th>
-            <th scope="col">q1</th>
-            <th scope="col">q2</th>
-            <th scope="col">q3</th>
-            <th scope="col">q4</th>
-            <th scope="col">Yıl</th>
+            <th scope="col">Kaynak</th>
           </tr>
         </thead>
         <tbody>
@@ -118,18 +81,14 @@ function App() {
               <th scope="row">{d.Sno}</th>
               <td>{d["Başlık"]}</td>
               <td>{d["Kısa Başlık"]}</td>
-              <td>{d.MEP}</td>
               <td>{d["Ödeme"]}</td>
+              <td>{d.MEP}</td>
               <td>{d.ISSN}</td>
               <td>{d.EISSN}</td>
               <td>{d["AHCI?"] ? "✓" : ""}</td>
               <td>{d["SOC?"] ? "✓" : ""}</td>
               <td>{d.SCI ? "✓" : ""}</td>
-              <td>{d.q1 ? "✓" : ""}</td>
-              <td>{d.q2 ? "✓" : ""}</td>
-              <td>{d.q3 ? "✓" : ""}</td>
-              <td>{d.q4 ? "✓" : ""}</td>
-              <td>{d["Yıl"]}</td>
+              <td>{d["Kaynak"]}</td>
             </tr>
           ))}
         </tbody>
@@ -154,7 +113,10 @@ function App() {
         activeClassName={"active"}
         activeLinkClassName={"page-link"}
       />
+      <div>Bu sayfa yalnızca bilgilendirme amaçlıdır...</div>
+      <div>Detaylı bilgi için: https://cabim.ulakbim.gov.tr/ubyt/</div>
     </div>
+
   );
 }
 
