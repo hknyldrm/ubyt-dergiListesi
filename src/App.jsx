@@ -39,7 +39,9 @@ function App() {
       setItem(filterResult);
     }
     setFilterItem(e.target.value);
-  };
+  }; 
+
+
 
   const handlePageClick = (data) => {
     setCurrentItemPage(data.selected + 1);
@@ -52,7 +54,7 @@ function App() {
           <input
             type="search"
             value={filterItem}
-            onInput={(e) => handleFilter(e)}
+            onChange={(e) => handleFilter(e)}
             className={"form-control justify-content-center"}
             placeholder="Search"
           />
